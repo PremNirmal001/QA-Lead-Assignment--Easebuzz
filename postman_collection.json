@@ -1,0 +1,118 @@
+{
+    "info": {
+        "name": "API Automation Collection",
+        "_postman_id": "12345-abcde-67890",
+        "description": "Postman collection for GET, POST, DELETE APIs",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "GET Posts",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "https://jsonplaceholder.typicode.com/posts",
+                    "protocol": "https",
+                    "host": [
+                        "jsonplaceholder",
+                        "typicode",
+                        "com"
+                    ],
+                    "path": [
+                        "posts"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200', function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "POST Create Post",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"title\": \"foo\", \"body\": \"bar\", \"userId\": 1}"
+                },
+                "url": {
+                    "raw": "https://jsonplaceholder.typicode.com/posts",
+                    "protocol": "https",
+                    "host": [
+                        "jsonplaceholder",
+                        "typicode",
+                        "com"
+                    ],
+                    "path": [
+                        "posts"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "let response = pm.response.json();",
+                            "pm.test('Status code is 201', function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "pm.test('Title and body match', function () {",
+                            "    pm.expect(response.title).to.eql('foo');",
+                            "    pm.expect(response.body).to.eql('bar');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "DELETE Post",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "https://jsonplaceholder.typicode.com/posts/1",
+                    "protocol": "https",
+                    "host": [
+                        "jsonplaceholder",
+                        "typicode",
+                        "com"
+                    ],
+                    "path": [
+                        "posts",
+                        "1"
+                    ]
+                }
+            },
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('Status code is 200 or 204', function () {",
+                            "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
